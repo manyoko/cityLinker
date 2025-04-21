@@ -1,0 +1,13 @@
+# Node.js
+node_modules/
+
+# React build files
+build/
+
+# IDEs and editor files
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db

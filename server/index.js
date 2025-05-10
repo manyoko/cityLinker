@@ -1,35 +1,40 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+// server.js - Main Express Server File
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+const categoryRoutes = require('./routes/categories');
+const providerRoutes = require('./routes/providers');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+require('dotenv').config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/cityLinker', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.log('MongoDB connection error:', err));
+
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// After middleware setup (e.g. after app.use(express.json()))
+app.use('/api/categories', categoryRoutes);
+app.use('/api/providers', providerRoutes);
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/users', userRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Server is running...");
-});
 
-// GET all providers
-app.get("/api/providers", (req, res) => {
-    const dataPath = path.join(__dirname, "data/providers.json");
-    const raw = fs.readFileSync(dataPath);
-    const providers = JSON.parse(raw);
-    res.json(providers);
-  });
-  // GET by category
-  app.get("/api/providers/:category", (req, res) => {
-    const category = req.params.category.toLowerCase();
-    const dataPath = path.join(__dirname, "data/providers.json");
-    const raw = fs.readFileSync(dataPath);
-    const providers = JSON.parse(raw);
-    const filtered = providers.filter(p => p.category.toLowerCase() === category);
-    res.json(filtered);
-  });
 
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
+  console.log(`API available at http://localhost:${PORT}/api/`);
 });

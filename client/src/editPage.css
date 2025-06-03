@@ -1,0 +1,91 @@
+/* Place this in your CSS file or in a style tag 
+.ant-upload-list-item-name {
+    color: green !important;
+  }
+
+  .custom-input .ant-input:focus, .custom-input.ant-input:hover,
+.custom-input .ant-input-focused {
+  border-color: green !important;
+ 
+  outline: none;
+}
+.custom-input.ant-input:focus, .custom-input.ant-input:hover,
+.custom-input.ant-input-focused {
+  border-color: green !important;
+  outline: none;
+}
+*/
+
+.custom-input.ant-input:focus,
+.custom-input.ant-input:hover,
+.custom-input.ant-input-focused {
+  border-color: green !important;
+ 
+}
+
+.custom-timepicker.ant-picker-focused,
+.custom-timepicker.ant-picker:hover {
+  border-color: green !important;
+  
+}
+
+.custom-input.ant-select-focused .ant-select-selector,
+.custom-input.ant-select:hover .ant-select-selector {
+  border-color: green !important;
+  /* box-shadow: 0 0 0 2px rgba(0,128,0,0.2) !important; */
+}
+
+
+.custom-input.ant-btn-dashed:hover,
+.custom-input.ant-btn-dashed:focus,
+.custom-input.ant-btn-dashed:active {
+  border-color: green !important;
+  color: green !important;
+  background-color: transparent !important; /* keep transparent background */
+  /* box-shadow: 0 0 0 2px rgba(0,128,0,0.2) !important; */
+}
+
+
+
+
+
+/* Global override for all Input focus */
+.ant-select-focus,
+.ant-input:focus,
+.ant-input:hover,
+.ant-input-focused {
+  border-color: green !important;
+  
+}
+
+/* Global override for TimePicker */
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: green !important;
+ 
+}
+
+
+.custom-input.ant-input:focus,
+.custom-input.ant-input:hover,
+.custom-input.ant-input-focused {
+  border-color: green !important;
+ 
+  outline: none;
+}
+
+
+.custom-input .ant-input:focus,
+.custom-input .ant-input:hover,
+.custom-input .ant-input.ant-input-focused {
+  border-color: green !important;
+ 
+  outline: none;
+}
+
+
+
+
+.ant-upload-list-item-name {
+    color: green !important;
+  }

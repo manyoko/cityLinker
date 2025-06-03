@@ -1,0 +1,292 @@
+/* About Us Page Styles */
+.about-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2d3748;
+  }
+  
+  .about-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                url('https://example.com/mbeya-business.jpg') center/cover no-repeat;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+  }
+  
+  .about-hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .about-hero-content p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .about-mission {
+    padding: 4rem 0;
+    text-align: center;
+    background-color: #f7fafc;
+  }
+  
+  .about-mission h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #2d3748;
+  }
+  
+  .about-mission p {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-size: 1.1rem;
+  }
+  
+  .about-values {
+    padding: 4rem 0;
+  }
+  
+  .about-values h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    color: #2d3748;
+  }
+  
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .value-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .value-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .value-icon {
+    font-size: 2.5rem;
+    color: #48bb78;
+    margin-bottom: 1.5rem;
+  }
+  
+  .value-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #2d3748;
+  }
+  
+  .value-card p {
+    line-height: 1.6;
+    color: #4a5568;
+  }
+  
+  .about-team {
+    padding: 4rem 0;
+    background-color: #f7fafc;
+  }
+  
+  .about-team h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    color: #2d3748;
+  }
+  
+  .team-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  
+  .team-text {
+    line-height: 1.6;
+  }
+  
+  .team-text p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .address {
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+    color: #4a5568;
+  }
+  
+  .address-icon {
+    margin-right: 1rem;
+    color: #48bb78;
+  }
+  
+  .map-placeholder {
+    background-color: #e2e8f0;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: #4a5568;
+  }
+  
+  /* Contact Page Styles */
+  .contact-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2d3748;
+  }
+  
+  .contact-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                url('https://example.com/mbeya-contact.jpg') center/cover no-repeat;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+  }
+  
+  .contact-hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .contact-hero-content p {
+    font-size: 1.2rem;
+  }
+  
+  .contact-main {
+    padding: 4rem 0;
+  }
+  
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  
+  .contact-info h2, .contact-form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #2d3748;
+  }
+  
+  .info-item {
+    display: flex;
+    margin-bottom: 2rem;
+  }
+  
+  .info-icon {
+    font-size: 1.5rem;
+    color: #48bb78;
+    margin-right: 1.5rem;
+    margin-top: 0.3rem;
+  }
+  
+  .info-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+  }
+  
+  .info-item p {
+    color: #4a5568;
+    line-height: 1.6;
+  }
+  
+  .contact-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2d3748;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+  }
+  
+  .submit-btn {
+    background-color: #48bb78;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #38a169;
+  }
+  
+  .btn-icon {
+    margin-right: 0.5rem;
+  }
+  
+  .contact-map {
+    padding: 0 0 4rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .team-content, .contact-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .about-hero-content h1 {
+      font-size: 2.2rem;
+    }
+    
+    .values-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .contact-hero-content h1 {
+      font-size: 2rem;
+    }
+  }

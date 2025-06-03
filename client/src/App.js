@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-
+import './App.css'
 function App() {
   const [categories, setCategories] = useState([]);
   const [providers, setProviders] = useState([]);
@@ -106,16 +105,18 @@ function App() {
   };
 
   return (
+    <>
+    
     <div style={{ padding: '2rem', fontFamily: 'Arial', maxWidth: '1200px', margin: '0 auto' }}>
       <header style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0, color: 'green' }}>MBEYA CITY</h1>
-        <form onSubmit={handleSearch} style={{ display: 'flex', gap: '10px' }}>
+        <form onSubmit={handleSearch} style={{ display: 'flex', gap: '10px', marginTop: "50px" }}>
           <input
+            className='search-input'
             type="text"
             placeholder="Search providers..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ padding: '8px 12px', borderRadius: '4px', border: '1px solid #ddd' }}
+            
           />
           <button type="submit" style={{ 
             padding: '8px 16px', 
@@ -131,7 +132,7 @@ function App() {
       </header>
       
       {/* Display Categories */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '2rem', justifyContent: 'center'}}>
         {categories.map((category) => (
           <div 
             key={category.id} 
@@ -236,7 +237,7 @@ function App() {
                     href={provider.website} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    style={{ color: '#4D9DE0', textDecoration: 'none' }}
+                    style={{ color: 'green', textDecoration: 'none' }}
                     onClick={(e) => e.stopPropagation()}
                   >
                     Visit Website
@@ -248,6 +249,7 @@ function App() {
         ))}
       </div>
     </div>
+    </>
   );
 }
 

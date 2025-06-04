@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { 
-  Form, 
-  Input, 
-  Button, 
-  Select, 
-  message, 
-  Space, 
-  Row, 
-  Col, 
-  Upload, 
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  message,
+  Space,
+  Row,
+  Col,
+  Upload,
   TimePicker,
   Switch,
-  Card
-} from 'antd';
-import { UploadOutlined, PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import dayjs from 'dayjs';
+  Card,
+} from "antd";
+import {
+  UploadOutlined,
+  PlusOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
+import dayjs from "dayjs";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -28,44 +32,77 @@ const ProviderForm = () => {
   const [categories, setCategories] = useState([]);
   const [fileList, setFileList] = useState([]);
 
- 
-  
-
   useEffect(() => {
     fetchCategories();
   }, []);
 
   const fetchCategories = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/categories');
+      const { data } = await axios.get("http://localhost:5000/api/categories");
       setCategories(data);
     } catch (error) {
-      message.error('Failed to fetch categories');
+      message.error("Failed to fetch categories");
     }
   };
 
-  
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
+      // First upload images if there are any
+      let imageUrls = [];
+
+      if (fileList.length > 0) {
+        const formData = new FormData();
+        fileList.forEach((file) => {
+          if (file.originFileObj) {
+            formData.append("images", file.originFileObj);
+          }
+        });
+
+        // Upload images to the multiple endpoint
+        const uploadResponse = await axios.post(
+          "http://localhost:5000/api/providers/multiple",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        // Extract image URLs from response
+        imageUrls = uploadResponse.data.images || [];
+      }
+
+      // Prepare provider data
       const formattedValues = {
         ...values,
-        businessHours: Object.entries(values.businessHours || {}).reduce((acc, [day, hours]) => {
-          acc[day] = {
-            open: hours.open ? hours.open.format('HH:mm') : '',
-            close: hours.close ? hours.close.format('HH:mm') : ''
-          };
-          return acc;
-        }, {}),
-        image: fileList.map(file => file.url || file.response?.url)
+        businessHours: Object.entries(values.businessHours || {}).reduce(
+          (acc, [day, hours]) => {
+            acc[day] = {
+              open: hours.open ? hours.open.format("HH:mm") : "",
+              close: hours.close ? hours.close.format("HH:mm") : "",
+            };
+            return acc;
+          },
+          {}
+        ),
+        images: imageUrls, // Use 'images' to match your backend
       };
 
-        await axios.post('/api/providers', formattedValues);
-        message.success('Provider created successfully');
-      
-      navigate('/');
+      // Create the provider (you'll need a separate endpoint for this)
+      const response = await axios.post(
+        "http://localhost:5000/api/providers",
+        formattedValues
+      );
+
+      message.success("Provider created successfully!");
+      navigate("/admin/providers");
     } catch (error) {
-      message.error(error.response?.data?.message || 'Failed to save provider');
+      console.log(error);
+      message.error(
+        error.response?.data?.message || "Failed to create provider"
+      );
     } finally {
       setLoading(false);
     }
@@ -75,18 +112,24 @@ const ProviderForm = () => {
     setFileList(newFileList);
   };
 
+  // Remove the action prop to prevent automatic uploads
   const uploadProps = {
-    action: '/api/upload',
-    listType: 'picture',
+    listType: "picture",
     fileList,
     onChange: handleUploadChange,
     multiple: true,
-    accept: 'image/*'
+    accept: "image/*",
+    beforeUpload: () => false, // Prevent automatic upload
   };
 
   const daysOfWeek = [
-    'monday', 'tuesday', 'wednesday', 'thursday', 
-    'friday', 'saturday', 'sunday'
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
   ];
 
   return (
@@ -97,15 +140,15 @@ const ProviderForm = () => {
         onFinish={handleSubmit}
         initialValues={{
           location: {
-            city: 'Mbeya',
-            state: 'Mbeya',
+            city: "Mbeya",
+            state: "Mbeya",
             coordinates: {
               lat: -8.9093,
-              lng: 33.4608
-            }
+              lng: 33.4608,
+            },
           },
           verified: false,
-          featured: false
+          featured: false,
         }}
       >
         <Row gutter={16}>
@@ -113,7 +156,9 @@ const ProviderForm = () => {
             <Form.Item
               name="name"
               label="Business Name"
-              rules={[{ required: true, message: 'Please enter business name' }]}
+              rules={[
+                { required: true, message: "Please enter business name" },
+              ]}
             >
               <Input />
             </Form.Item>
@@ -122,11 +167,13 @@ const ProviderForm = () => {
             <Form.Item
               name="category"
               label="Category"
-              rules={[{ required: true, message: 'Please select category' }]}
+              rules={[{ required: true, message: "Please select category" }]}
             >
               <Select placeholder="Select category">
-                {categories.map(category => (
-                  <Option key={category._id} value={category._id}>{category.name}</Option>
+                {categories.map((category) => (
+                  <Option key={category._id} value={category._id}>
+                    {category.name}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>
@@ -136,7 +183,7 @@ const ProviderForm = () => {
         <Form.Item
           name="description"
           label="Description"
-          rules={[{ required: true, message: 'Please enter description' }]}
+          rules={[{ required: true, message: "Please enter description" }]}
         >
           <TextArea rows={4} />
         </Form.Item>
@@ -144,18 +191,20 @@ const ProviderForm = () => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              name={['contact']}
+              name={["contact"]}
               label="Contact Person"
-              rules={[{ required: true, message: 'Please enter contact person' }]}
+              rules={[
+                { required: true, message: "Please enter contact person" },
+              ]}
             >
               <Input />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name={['phone']}
+              name={["phone"]}
               label="Phone Number"
-              rules={[{ required: true, message: 'Please enter phone number' }]}
+              rules={[{ required: true, message: "Please enter phone number" }]}
             >
               <Input />
             </Form.Item>
@@ -163,17 +212,14 @@ const ProviderForm = () => {
         </Row>
 
         <Form.Item
-          name={['email']}
+          name={["email"]}
           label="Email"
-          rules={[{ type: 'email', message: 'Please enter valid email' }]}
+          rules={[{ type: "email", message: "Please enter valid email" }]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name={['website']}
-          label="Website"
-        >
+        <Form.Item name={["website"]} label="Website">
           <Input addonBefore="https://" />
         </Form.Item>
 
@@ -181,9 +227,9 @@ const ProviderForm = () => {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name={['location', 'address']}
+                name={["location", "address"]}
                 label="Address"
-                rules={[{ required: true, message: 'Please enter address' }]}
+                rules={[{ required: true, message: "Please enter address" }]}
               >
                 <Input />
               </Form.Item>
@@ -192,27 +238,24 @@ const ProviderForm = () => {
           <Row gutter={16}>
             <Col span={8}>
               <Form.Item
-                name={['location', 'city']}
+                name={["location", "city"]}
                 label="City"
-                rules={[{ required: true, message: 'Please enter city' }]}
+                rules={[{ required: true, message: "Please enter city" }]}
               >
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item
-                name={['location', 'state']}
+                name={["location", "state"]}
                 label="State"
-                rules={[{ required: true, message: 'Please enter state' }]}
+                rules={[{ required: true, message: "Please enter state" }]}
               >
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item
-                name={['location', 'zipCode']}
-                label="Zip Code"
-              >
+              <Form.Item name={["location", "zipCode"]} label="Zip Code">
                 <Input />
               </Form.Item>
             </Col>
@@ -220,59 +263,49 @@ const ProviderForm = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name={['location', 'coordinates', 'lat']}
+                name={["location", "coordinates", "lat"]}
                 label="Latitude"
               >
-                <Input style={{ width: '100%' }} />
+                <Input style={{ width: "100%" }} />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name={['location', 'coordinates', 'lng']}
+                name={["location", "coordinates", "lng"]}
                 label="Longitude"
               >
-                <Input style={{ width: '100%' }} />
+                <Input style={{ width: "100%" }} />
               </Form.Item>
             </Col>
           </Row>
         </Card>
 
         <Card title="Business Hours" style={{ marginBottom: 16 }}>
-          {daysOfWeek.map(day => (
+          {daysOfWeek.map((day) => (
             <Row gutter={16} key={day}>
               <Col span={4}>
                 <Form.Item
                   label={day.charAt(0).toUpperCase() + day.slice(1)}
                   style={{ marginBottom: 8 }}
-                >
-                
-
-                </Form.Item>
+                ></Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item
-                  name={['businessHours', day, 'open']}
-                  noStyle
-                >
-                  <TimePicker 
-                    format="HH:mm" 
-                    placeholder="Opening time" 
-                    style={{ width: '100%' }} 
+                <Form.Item name={["businessHours", day, "open"]} noStyle>
+                  <TimePicker
+                    format="HH:mm"
+                    placeholder="Opening time"
+                    style={{ width: "100%" }}
                     disabled={false}
                   />
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item
-                  name={['businessHours', day, 'close']}
-                  noStyle
-                >
-                  <TimePicker 
-                    format="HH:mm" 
-                    placeholder="Closing time" 
-                    style={{ width: '100%' }} 
+                <Form.Item name={["businessHours", day, "close"]} noStyle>
+                  <TimePicker
+                    format="HH:mm"
+                    placeholder="Closing time"
+                    style={{ width: "100%" }}
                     disabled={false}
-
                   />
                 </Form.Item>
               </Col>
@@ -285,32 +318,40 @@ const ProviderForm = () => {
             {(fields, { add, remove }) => (
               <>
                 {fields.map(({ key, name, ...restField }) => (
-                  <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                  <Space
+                    key={key}
+                    style={{ display: "flex", marginBottom: 8 }}
+                    align="baseline"
+                  >
                     <Form.Item
                       {...restField}
-                      name={[name, 'name']}
-                      rules={[{ required: true, message: 'Missing service name' }]}
+                      name={[name, "name"]}
+                      rules={[
+                        { required: true, message: "Missing service name" },
+                      ]}
                     >
                       <Input placeholder="Service name" />
                     </Form.Item>
                     <Form.Item
                       {...restField}
-                      name={[name, 'price']}
-                      rules={[{ required: true, message: 'Missing price' }]}
+                      name={[name, "price"]}
+                      rules={[{ required: true, message: "Missing price" }]}
                     >
                       <Input placeholder="Price" />
                     </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      name={[name, 'description']}
-                    >
+                    <Form.Item {...restField} name={[name, "description"]}>
                       <Input placeholder="Description" />
                     </Form.Item>
                     <MinusCircleOutlined onClick={() => remove(name)} />
                   </Space>
                 ))}
                 <Form.Item>
-                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    block
+                    icon={<PlusOutlined />}
+                  >
                     Add Service
                   </Button>
                 </Form.Item>
@@ -325,35 +366,12 @@ const ProviderForm = () => {
           </Upload>
         </Form.Item>
 
-        <Row gutter={16}>
-          {/*<Col span={12}>
-            <Form.Item
-              name="verified"
-              label="Verified Provider"
-              valuePropName="checked"
-            >
-              <Switch />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              name="featured"
-              label="Featured Provider"
-              valuePropName="checked"
-            >
-              <Switch />
-            </Form.Item>
-          </Col> */}
-        </Row>
-
         <Form.Item>
           <Space>
             <Button type="primary" htmlType="submit" loading={loading}>
               Create
             </Button>
-            <Button onClick={() => navigate('/admin/providers')}>
-              Cancel
-            </Button>
+            <Button onClick={() => navigate("/admin/providers")}>Cancel</Button>
           </Space>
         </Form.Item>
       </Form>

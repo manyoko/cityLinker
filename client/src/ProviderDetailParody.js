@@ -37,18 +37,19 @@ function ProviderDetail() {
         console.log(response.data);
         setProvider(response.data);
 
-        // Create hero images array with main image and other images
         const allImages = [];
-        // Push main image if it exists and is a string
-        if (response.data.images) {
-          allImages.push(response.data.images);
-        }
         if (
           Array.isArray(response.data.images) &&
           response.data.images.length > 0
         ) {
-          // Take up to 4 additional images for the hero carousel
-          allImages.push(...response.data.images.slice(0, 4));
+          // If images is an array, use up to 5 images for the hero carousel
+          allImages.push(...response.data.images.slice(0, 5));
+        } else if (
+          response.data.images &&
+          typeof response.data.images === "string"
+        ) {
+          // If images is a single string URL
+          allImages.push(response.data.images);
         }
 
         setHeroImages(allImages);
@@ -612,7 +613,7 @@ function ProviderDetail() {
                   }}
                 >
                   <img
-                    src={img}
+                    src={`http://localhost:5000${img}`}
                     alt={`Gallery preview ${index + 1}`}
                     style={{
                       width: "100%",
@@ -712,7 +713,7 @@ function ProviderDetail() {
                   }}
                 >
                   <img
-                    src={img}
+                    src={`http://localhost:5000${img}`}
                     alt={`Gallery ${index}`}
                     onClick={() => openModal(img, index)}
                     style={{
@@ -749,7 +750,7 @@ function ProviderDetail() {
                     }}
                   >
                     <img
-                      src={img}
+                      src={`http://localhost:5000${img}`}
                       alt={`Gallery ${index}`}
                       style={{
                         width: "100%",
@@ -1639,7 +1640,7 @@ function ProviderDetail() {
             }}
           >
             <img
-              src={modalImage}
+              src={`http://localhost:5000${modalImage}`}
               alt="Expanded view"
               style={{
                 maxWidth: "100%",

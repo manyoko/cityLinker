@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { handleAuthError } from "./utils/errorHandler";
 import "./editPage.css";
 import axios from "axios";
 import {
@@ -33,6 +34,7 @@ const EditProviderForm = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     fetchCategories();
@@ -153,7 +155,10 @@ const EditProviderForm = () => {
       }
       navigate(`/provider/${id}`);
     } catch (error) {
-      console.error("Update error:", error);
+      const authError = handleAuthError(error);
+      if (authError) {
+        setNotification(authError);
+      }
       message.error(
         error.response?.data?.message || "Failed to update provider"
       );
@@ -187,6 +192,13 @@ const EditProviderForm = () => {
 
   return (
     <Card title="Edit Business Details" loading={loading}>
+      {notification && (
+        <div className={`notification ${notification.severity}`}>
+          <h3>{notification.title}</h3>
+          <p>{notification.message}</p>
+          <button onClick={() => setNotification(null)}>Dismiss</button>
+        </div>
+      )}
       <Form
         form={form}
         layout="vertical"

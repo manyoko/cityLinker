@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { handleAuthError } from "./utils/errorHandler";
 import axios from "axios";
 import {
   Form,
@@ -31,6 +32,7 @@ const ProviderForm = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     fetchCategories();
@@ -99,7 +101,10 @@ const ProviderForm = () => {
       message.success("Provider created successfully!");
       navigate("/admin/providers");
     } catch (error) {
-      console.log(error);
+      const authError = handleAuthError(error);
+      if (authError) {
+        setNotification(authError);
+      }
       message.error(
         error.response?.data?.message || "Failed to create provider"
       );
@@ -134,6 +139,13 @@ const ProviderForm = () => {
 
   return (
     <Card title="Add New Provider">
+      {notification && (
+        <div className={`notification ${notification.severity}`}>
+          <h3>{notification.title}</h3>
+          <p>{notification.message}</p>
+          <button onClick={() => setNotification(null)}>Dismiss</button>
+        </div>
+      )}
       <Form
         form={form}
         layout="vertical"

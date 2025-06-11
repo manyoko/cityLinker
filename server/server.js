@@ -34,6 +34,9 @@ app.use("/api/providers", providerRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/users", userRoutes);
 
+// Admin routes (newly added)
+app.use("/api/admin", require("./routes/admin"));
+
 // Error handling middleware for multer
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {

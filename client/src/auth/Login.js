@@ -18,7 +18,8 @@ const Login = () => {
     const result = await login(credentials);
     if (result.success) {
       setMessage("Login successful!");
-      navigate("/createProvider");
+      console.log(`message: ${message}`, result);
+      navigate("/");
     } else {
       setMessage(result.message || "Login failed.");
     }

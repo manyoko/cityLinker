@@ -9,7 +9,9 @@ import ProviderAdmin from "./Admin";
 import Layout from "./Layout";
 import NotFound from "./NotFound";
 import Login from "./auth/Login";
+import Logout from "./auth/Logout";
 import Register from "./auth/Register";
+import PrivateRoute from "./PrivateRoute";
 
 function AppRouter() {
   return (
@@ -17,13 +19,20 @@ function AppRouter() {
       <Layout>
         <Routes>
           <Route path="/" element={<App />} />
+
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<Register />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/CreateProvider" element={<AddProviderForm />} />
-          <Route path="/EditProvider/:id" element={<EditProvider />} />
-          <Route path="/admin" element={<ProviderAdmin />} />
+
+          {/* Protected Admin Route */}
+          <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+            <Route path="/CreateProvider" element={<AddProviderForm />} />
+            <Route path="/EditProvider/:id" element={<EditProvider />} />
+            <Route path="/admin" element={<ProviderAdmin />} />
+          </Route>
+
           <Route path="/provider/:id" element={<ProviderDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

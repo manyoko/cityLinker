@@ -1,6 +1,14 @@
-import React from 'react';
-import './footer.css'
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import React from "react";
+import "./footer.css";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -9,24 +17,43 @@ const Footer = () => {
         <div className="footer-section">
           <h3 className="footer-heading">MBEYA CITY BUSINESS</h3>
           <p className="footer-text">
-            Connecting you with the top business service providers in Mbeya region.
+            Connecting you with the top business service providers in Mbeya
+            region.
           </p>
           <div className="footer-social">
-            <a href="#" className="social-icon"><FaFacebook /></a>
-            <a href="#" className="social-icon"><FaTwitter /></a>
-            <a href="#" className="social-icon"><FaInstagram /></a>
-            <a href="#" className="social-icon"><FaLinkedin /></a>
+            <a href="#" className="social-icon">
+              <FaFacebook />
+            </a>
+            <a href="#" className="social-icon">
+              <FaTwitter />
+            </a>
+            <a href="#" className="social-icon">
+              <FaInstagram />
+            </a>
+            <a href="#" className="social-icon">
+              <FaLinkedin />
+            </a>
           </div>
         </div>
 
         <div className="footer-section">
           <h3 className="footer-heading">Quick Links</h3>
           <ul className="footer-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/providers">Business Providers</a></li>
-            <li><a href="/contact">Contact</a></li>
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/about">About Us</a>
+            </li>
+            <li>
+              <a href="/services">Services</a>
+            </li>
+            <li>
+              <a href="/providers">Business Providers</a>
+            </li>
+            <li>
+              <a href="/contact">Contact</a>
+            </li>
           </ul>
         </div>
 
@@ -59,7 +86,10 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} MBEYA CITY. All Rights Reserved.</p>
+        <p>
+          created with love by ROBINTECH &copy; {new Date().getFullYear()} MBEYA
+          CITY. All Rights Reserved.
+        </p>
       </div>
     </footer>
   );

@@ -4,13 +4,14 @@ const Provider = require("../models/Provider"); // Adjust path as needed
 const upload = require("../middleware/upload");
 const path = require("path");
 const fs = require("fs");
+const { authorize, auth } = require("../middleware/auth");
 
 router.post("/multiple", upload.array("images", 5), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No images uploaded" });
     }
-    console.log(req.files);
+
     const imageUrls = req.files.map(
       (file) => `/uploads/providers/${file.filename}`
     );
@@ -55,7 +56,7 @@ router.get("/", async (req, res) => {
 });
 
 // DELETE route with image cleanup
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, authorize("admin"), async (req, res) => {
   try {
     const provider = await Provider.findById(req.params.id);
     if (!provider) {
@@ -188,7 +189,7 @@ router.get("/:id", async (req, res) => {
 // @route   PUT /api/providers/:id
 // @desc    Update a provider by ID
 // @access  Protected (optional)
-router.put("/:id", async (req, res) => {
+router.put("/:id", authorize, async (req, res) => {
   try {
     console.log("Updating provider:", req.params.id);
     console.log("Request body:", req.body);

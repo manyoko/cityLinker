@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "./auth/AuthContext";
 import { Link } from "react-router-dom";
 import {
   FaBars,
@@ -12,6 +13,7 @@ import {
 import "./navigation.css";
 
 const Navbar = () => {
+  const { isLogin } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -43,12 +45,32 @@ const Navbar = () => {
               <FaPhone className="icon" /> Contact
             </Link>
             <div className="auth-buttons">
-              <Link to="/login" className="btn-outline">
-                <FaSignInAlt className="icon" /> Sign In
-              </Link>
-              <Link to="/register" className="btn-primary">
-                <FaUserPlus className="icon" /> Sign Up
-              </Link>
+              {isLogin ? (
+                <Link
+                  to="/logout"
+                  className="btn-outline"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FaSignInAlt className="icon" /> Sign Out
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="btn-outline"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaSignInAlt className="icon" /> Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="btn-primary"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaUserPlus className="icon" /> Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
 
@@ -81,20 +103,32 @@ const Navbar = () => {
               <FaPhone className="icon" /> Contact
             </Link>
             <div className="auth-mobile-buttons">
-              <Link
-                to="/signin"
-                className="btn-outline"
-                onClick={() => setIsOpen(false)}
-              >
-                <FaSignInAlt className="icon" /> Sign In
-              </Link>
-              <Link
-                to="/signup"
-                className="btn-primary"
-                onClick={() => setIsOpen(false)}
-              >
-                <FaUserPlus className="icon" /> Sign Up
-              </Link>
+              {isLogin ? (
+                <Link
+                  to="/logout"
+                  className="btn-outline"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FaSignInAlt className="icon" /> Sign Out
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className="btn-outline"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaSignInAlt className="icon" /> Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="btn-primary"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <FaUserPlus className="icon" /> Sign Up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

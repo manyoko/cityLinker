@@ -75,10 +75,9 @@ export const AuthProvider = ({ children }) => {
       if (res.ok) {
         setToken(data.token);
         localStorage.setItem("token", data.token);
-        await fetchUserProfile();
         return { success: true };
       }
-      return { success: false, message: data.message };
+      return { success: false, message: data.message }; // ✅ correct
     } catch {
       return { success: false, message: "Network error" };
     } finally {
@@ -157,6 +156,7 @@ export const AuthProvider = ({ children }) => {
         addToFavorites,
         removeFromFavorites,
         hasPermission,
+        isLogin: !!token,
       }}
     >
       {children}

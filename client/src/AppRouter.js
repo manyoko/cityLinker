@@ -11,6 +11,7 @@ import NotFound from "./NotFound";
 import Login from "./auth/Login";
 import Logout from "./auth/Logout";
 import Register from "./auth/Register";
+import BusinessOwnerDashboard from "./BusinessOwnerDashboard";
 import PrivateRoute from "./PrivateRoute";
 
 function AppRouter() {
@@ -28,9 +29,14 @@ function AppRouter() {
 
           {/* Protected Admin Route */}
           <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+            <Route path="/admin" element={<ProviderAdmin />} />
+          </Route>
+          <Route
+            element={<PrivateRoute allowedRoles={["admin", "provider"]} />}
+          >
+            <Route path="/dashboard" element={<BusinessOwnerDashboard />} />
             <Route path="/CreateProvider" element={<AddProviderForm />} />
             <Route path="/EditProvider/:id" element={<EditProvider />} />
-            <Route path="/admin" element={<ProviderAdmin />} />
           </Route>
 
           <Route path="/provider/:id" element={<ProviderDetail />} />

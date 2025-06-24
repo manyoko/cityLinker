@@ -18,7 +18,7 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Create new user
+    // Create new usera
     user = new User({
       username,
       email,
@@ -66,6 +66,14 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // Case: User signed up with Google, no password set
+    if (!user.password) {
+      return res.status(400).json({
+        message:
+          "This account was registered using Google. Please log in with Google Email instead.",
+      });
+    }
+
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -99,7 +107,7 @@ router.post("/login", async (req, res) => {
 router.get("/profile", auth, async (req, res) => {
   try {
     // User is already attached to req.user by auth middleware
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req.user._id)
       .select("-password")
       .populate("favorites", "name description");
 

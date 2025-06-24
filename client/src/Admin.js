@@ -65,20 +65,28 @@ const AdminPanel = () => {
     }
   };
 
-  // Example of how an admin might demote a user from the frontend
   const demoteAdminToUser = async (userId) => {
-    const token = localStorage.getItem("userToken"); // Get admin's token
+    const token = localStorage.getItem("userToken");
+    const isOAuth = localStorage.getItem("isOAuth") === "true";
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (!isOAuth && token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/admin/demote/${userId}`,
-        {}, // No request body needed as ID is in URL
+        `http://localhost:5000/api/admin/demote/${userId}`, // URL
+        {}, // No request body
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers,
+          withCredentials: true, // Ensure cookies are sent for OAuth
         }
       );
+
       console.log(response.data.message);
       // Refresh user list or update local state
     } catch (error) {
@@ -180,25 +188,29 @@ const AdminPanel = () => {
   }
 
   const handleDelete = async (id) => {
-    let token = localStorage.getItem("userToken");
+    const token = localStorage.getItem("userToken");
+    const isOAuth = localStorage.getItem("isOAuth") === "true";
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (!isOAuth && token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
     if (window.confirm("Are you sure you want to delete this provider?")) {
       try {
-        // Replace with your actual API endpoint for deleting a provider
         const response = await fetch(
           `http://localhost:5000/api/providers/${id}`,
           {
             method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ id: id }),
+            headers,
+            body: JSON.stringify({ id }),
+            credentials: "include", // allow cookies to be sent with request
           }
         );
 
         if (!response.ok) {
-          const errorData = await response.json(); // If your API returns error details
-
+          const errorData = await response.json();
           throw new Error(
             `Failed to delete provider: ${
               errorData.message || response.statusText
@@ -206,16 +218,12 @@ const AdminPanel = () => {
           );
         }
 
-        // If the deletion was successful on the backend, then update the local state
+        // Update local UI state
         setProviders(providers.filter((p) => p._id !== id));
-        alert("Provider deleted successfully!"); // Optional: Provide user feedback
+        alert("Provider deleted successfully!");
       } catch (error) {
         console.error("Error deleting provider:", error);
-
-        if (true) {
-          setNotification();
-        }
-        alert("Error deleting provider. Please try again."); // Optional: Provide user feedback
+        alert("Error deleting provider. Please try again.");
       }
     }
   };

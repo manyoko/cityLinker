@@ -34,21 +34,37 @@ router.post("/multiple", upload.array("images", 5), async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    console.log("Create provider request:", req.body);
-
     const provider = new Provider(req.body);
+
     const saved = await provider.save();
+    console.log("is provider saved", saved);
 
     res.status(201).json(saved);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: error.message });
   }
 });
 
 // GET route to retrieve all providers
+// router.get("/", async (req, res) => {
+//   try {
+//     const providers = await Provider.find();
+//     res.json(providers);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 router.get("/", async (req, res) => {
   try {
-    const providers = await Provider.find();
+    const { owner } = req.query;
+    let query = {};
+
+    if (owner) {
+      query.owner = owner;
+    }
+
+    const providers = await Provider.find(query);
     res.json(providers);
   } catch (error) {
     res.status(500).json({ error: error.message });

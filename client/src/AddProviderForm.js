@@ -93,6 +93,8 @@ const ProviderForm = () => {
       };
 
       // Create the provider (you'll need a separate endpoint for this)
+      console.log("Submitting values:", formattedValues);
+
       const response = await axios.post(
         "http://localhost:5000/api/providers",
         formattedValues
@@ -153,7 +155,7 @@ const ProviderForm = () => {
         initialValues={{
           location: {
             city: "Mbeya",
-            state: "Mbeya",
+            district: "Mbeya",
             coordinates: {
               lat: -8.9093,
               lng: 33.4608,
@@ -259,11 +261,13 @@ const ProviderForm = () => {
             </Col>
             <Col span={8}>
               <Form.Item
-                name={["location", "state"]}
-                label="State"
-                rules={[{ required: true, message: "Please enter state" }]}
+                name={["location", "district"]}
+                label="District"
+                rules={[
+                  { required: true, message: "Please enter district name" },
+                ]}
               >
-                <Input disabled />
+                <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -383,7 +387,7 @@ const ProviderForm = () => {
             <Button type="primary" htmlType="submit" loading={loading}>
               Create
             </Button>
-            <Button onClick={() => navigate("/admin/providers")}>Cancel</Button>
+            <Button onClick={() => navigate("/admin")}>Cancel</Button>
           </Space>
         </Form.Item>
       </Form>

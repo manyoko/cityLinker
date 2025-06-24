@@ -3,6 +3,13 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
+    googleId: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+    },
     username: {
       type: String,
       required: true,
@@ -14,7 +21,7 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: false,
     },
     avatar: {
       type: String,
@@ -25,10 +32,15 @@ const UserSchema = new mongoose.Schema(
         ref: "Provider",
       },
     ],
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
     role: {
       type: String,
       enum: ["user", "provider", "admin"],
-      default: "user",
+      default: "provider",
     },
   },
   { timestamps: true }

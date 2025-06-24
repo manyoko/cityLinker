@@ -75,7 +75,8 @@ router.put("/demote/:userId", auth, authorize("admin"), async (req, res) => {
       user: { id: user._id, email: user.email, role: user.role },
     });
   } catch (err) {
-    console.error("Error demoting user:", err.message);
+    console.log(err);
+    //console.error("Error demoting user:", err.message);
     res.status(500).send("Server Error");
   }
 });

@@ -206,7 +206,7 @@ const EditProviderForm = () => {
         initialValues={{
           location: {
             city: "Mbeya",
-            state: "Mbeya",
+            district: "Mbeya",
             coordinates: {
               lat: -8.9093,
               lng: 33.4608,
@@ -313,7 +313,7 @@ const EditProviderForm = () => {
             <Col span={8}>
               <Form.Item
                 name={["location", "district"]}
-                label="State"
+                label="District"
                 rules={[{ required: true, message: "Please enter district" }]}
               >
                 <Input className="custom-input" />

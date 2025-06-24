@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import GoogleLoginButton from "./GoogleLoginButton";
 import "./Login.css"; // Import the plain CSS file
 
 const Login = () => {
@@ -50,6 +51,7 @@ const Login = () => {
       <button type="submit" className="submit-btn" disabled={loading}>
         {loading ? "Logging in..." : "Login"}
       </button>
+      <GoogleLoginButton />
     </form>
   );
 };
